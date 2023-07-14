@@ -64,11 +64,11 @@ proc main =
 
     if not active and isKeyPressed(keys.activation):
       # activate
-      echo format(times.now(), "'*' hh tt : mm'm' : ss's'") & " | 👇 started!"
+      echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | 👇 started!"
       active = true
     elif active and isKeyPressed(keys.deactivation):
       # deactivate
-      echo format(times.now(), "'*' hh tt : mm'm' : ss's'") & " | ❌ stopped!"
+      echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | ❌ stopped!"
       active = false
 
     # auto click
