@@ -1,26 +1,24 @@
 import
-  # std
   std/os,
   std/times,
 
-  # pkg
-  winim/lean,
+  pkg/winim/lean,
 
-  # modules
   keycodes,
   input
 
 
+const
+  holdTime = 1
+  delay = 1
+
 var
   runApp = true
+  active = false
   keys: tuple[
     activation: KeyCode,
     deactivation: KeyCode,
   ]
-
-const
-  holdTime = 1
-  delay = 1
 
 
 proc handleInitialEnterKey =
@@ -33,9 +31,6 @@ proc handleInitialEnterKey =
 
 
 proc main =
-  setControlCHook proc {.noconv.} =
-    runApp = false
-
   echo "[simple auto clicker 👇👇👇]"
   handleInitialEnterKey()
 
@@ -57,8 +52,10 @@ proc main =
 
   echo "> press ctrl+c to exit"
 
-  # run app
-  var active = false
+  setControlCHook proc {.noconv.} =
+    runApp = false
+
+  # app loop
   while runApp:
     pollInput()
 
