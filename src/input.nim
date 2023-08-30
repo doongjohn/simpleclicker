@@ -1,6 +1,7 @@
-import winim/lean
+import
+  pkg/winim/lean,
 
-import keycodes
+  keycodes
 
 
 var
