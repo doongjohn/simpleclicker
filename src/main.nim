@@ -1,11 +1,8 @@
-import
-  std/os,
-  std/times,
-
-  pkg/winim/lean,
-
-  keycodes,
-  input
+import std/os
+import std/times
+import pkg/winim/lean
+import keycodes
+import input
 
 
 const
@@ -14,7 +11,7 @@ const
 
 var
   runApp = true
-  active = false
+  autoClickActive = false
   keys: tuple[
     activation: KeyCode,
     deactivation: KeyCode,
@@ -23,10 +20,10 @@ var
 
 proc handleInitialEnterKey =
   # wait for the user to release the enter key
-  pollInput()
+  pollKeyboardInput()
   if getDownKeys().contains(KeyEnter):
     while getReleasedKey() != KeyEnter:
-      pollInput()
+      pollKeyboardInput()
       sleep(1)
 
 
@@ -37,7 +34,7 @@ proc main =
   # set activation key
   stdout.write("> activation key: ")
   while keys.activation == KeyNone:
-    pollInput(excludes = {Key_Shift, Key_Ctrl, Key_Alt})
+    pollKeyboardInput(excludes = {Key_Shift, Key_Ctrl, Key_Alt})
     keys.activation = getReleasedKey()
     if keys.activation != KeyNone:
       echo keys.activation
@@ -45,7 +42,7 @@ proc main =
   # set deactivation key
   stdout.write("> deactivation key: ")
   while keys.deactivation == KeyNone:
-    pollInput(excludes = {Key_Shift, Key_Ctrl, Key_Alt})
+    pollKeyboardInput(excludes = {Key_Shift, Key_Ctrl, Key_Alt})
     keys.deactivation = getReleasedKey()
     if keys.deactivation != KeyNone:
       echo keys.deactivation
@@ -57,19 +54,19 @@ proc main =
 
   # app loop
   while runApp:
-    pollInput()
+    pollKeyboardInput()
 
-    if not active and isKeyPressed(keys.activation):
+    if not autoClickActive and isKeyPressed(keys.activation):
       # activate
       echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | 👇 started!"
-      active = true
-    elif active and isKeyPressed(keys.deactivation):
+      autoClickActive = true
+    elif autoClickActive and isKeyPressed(keys.deactivation):
       # deactivate
       echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | ❌ stopped!"
-      active = false
+      autoClickActive = false
 
     # auto click
-    if active:
+    if autoClickActive:
       mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
       sleep(holdTime)
       mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)

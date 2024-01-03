@@ -1,23 +1,21 @@
-import
-  pkg/winim/lean,
-
-  keycodes
+import pkg/winim/lean
+import keycodes
 
 
 var
   # TODO: use bit array instead?
-  prevStateDown: set[KeyCode]
-  curStatePressed: set[KeyCode]
-  curStateReleased: set[KeyCode]
+  prevStateKeyDown: set[KeyCode]
+  curStateKeyPressed: set[KeyCode]
+  curStateKeyReleased: set[KeyCode]
 
 
-proc resetInput* =
-  prevStateDown = {}
-  curStatePressed = {}
-  curStateReleased = {}
+proc resetKeyboardInput* =
+  prevStateKeyDown = {}
+  curStateKeyPressed = {}
+  curStateKeyReleased = {}
 
 
-proc pollInput*(excludes: set[KeyCode] = {}) =
+proc pollKeyboardInput*(excludes: set[KeyCode] = {}) =
   for i in 1 ..< 255:
     if excludes.contains(KeyCode(i)):
       continue
@@ -25,33 +23,33 @@ proc pollInput*(excludes: set[KeyCode] = {}) =
     let pressed = GetAsyncKeyState(int32(i)) < 0
     let key = KeyCode(i)
 
-    curStatePressed.excl(key)
-    curStateReleased.excl(key)
+    curStateKeyPressed.excl(key)
+    curStateKeyReleased.excl(key)
 
-    if pressed and not prevStateDown.contains(key):
+    if pressed and not prevStateKeyDown.contains(key):
       # key pressed
-      prevStateDown.incl(key)
-      curStatePressed.incl(key)
-    elif not pressed and prevStateDown.contains(key):
+      prevStateKeyDown.incl(key)
+      curStateKeyPressed.incl(key)
+    elif not pressed and prevStateKeyDown.contains(key):
       # key released
-      prevStateDown.excl(key)
-      curStateReleased.incl(key)
+      prevStateKeyDown.excl(key)
+      curStateKeyReleased.incl(key)
 
 
 proc isKeyPressed*(key: KeyCode): bool =
-  curStatePressed.contains(key)
+  curStateKeyPressed.contains(key)
 
 
 proc isKeyDown*(key: KeyCode): bool =
-  prevStateDown.contains(key)
+  prevStateKeyDown.contains(key)
 
 
 proc isKeyUp*(key: KeyCode): bool =
-  curStateReleased.contains(key)
+  curStateKeyReleased.contains(key)
 
 
 proc getPressedKeys*: set[KeyCode] =
-  curStatePressed
+  curStateKeyPressed
 
 
 proc getPressedKey*: KeyCode =
@@ -61,7 +59,7 @@ proc getPressedKey*: KeyCode =
 
 
 proc getDownKeys*: set[KeyCode] =
-  prevStateDown
+  prevStateKeyDown
 
 
 proc getDownKey*: KeyCode =
@@ -71,7 +69,7 @@ proc getDownKey*: KeyCode =
 
 
 proc getReleasedKeys*: set[KeyCode] =
-  curStateReleased
+  curStateKeyReleased
 
 
 proc getReleasedKey*: KeyCode =
