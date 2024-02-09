@@ -36,15 +36,15 @@ proc pollKeyboardInput*(excludes: set[KeyCode] = {}) =
       curStateKeyReleased.incl(key)
 
 
-proc isKeyPressed*(key: KeyCode): bool =
+proc isPressed*(key: KeyCode): bool =
   curStateKeyPressed.contains(key)
 
 
-proc isKeyDown*(key: KeyCode): bool =
+proc isDown*(key: KeyCode): bool =
   prevStateKeyDown.contains(key)
 
 
-proc isKeyUp*(key: KeyCode): bool =
+proc isUp*(key: KeyCode): bool =
   curStateKeyReleased.contains(key)
 
 

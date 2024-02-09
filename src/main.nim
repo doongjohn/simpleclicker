@@ -56,11 +56,11 @@ proc main =
   while runApp:
     pollKeyboardInput()
 
-    if not autoClickActive and isKeyPressed(keys.activation):
+    if not autoClickActive and keys.activation.isPressed():
       # activate
       echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | 👇 started!"
       autoClickActive = true
-    elif autoClickActive and isKeyPressed(keys.deactivation):
+    elif autoClickActive and keys.deactivation.isPressed():
       # deactivate
       echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | ❌ stopped!"
       autoClickActive = false
