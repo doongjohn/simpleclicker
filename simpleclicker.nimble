@@ -24,7 +24,7 @@ proc extractTaskArgs(taskName: string): seq[string] =
   args[argStart .. ^1]
 
 
-task build_windows, "build windows exe":
+task build_windows, "build windows exe via zig cc":
   const zigcc = "{getCurrentDir()}/zigcc".fmt()
   # zig cc without pdb
   # https://ziggit.dev/t/how-to-use-zig-cc-without-generating-a-pdb-file/2873
