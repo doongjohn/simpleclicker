@@ -29,6 +29,7 @@ proc handleInitialEnterKey =
 
 proc main =
   echo "[simple auto clicker 👇👇👇]"
+
   handleInitialEnterKey()
 
   # set activation key
