@@ -21,8 +21,8 @@ var
 proc handleInitialEnterKey =
   # wait for the user to release the enter key
   pollKeyboardInput()
-  if getDownKeys().contains(KeyEnter):
-    while getReleasedKey() != KeyEnter:
+  if getDownKeys().contains(Key_Enter):
+    while getReleasedKey() != Key_Enter:
       pollKeyboardInput()
       sleep(1)
 
@@ -34,18 +34,18 @@ proc main =
 
   # set activation key
   stdout.write("> activation key: ")
-  while keys.activation == KeyNone:
+  while keys.activation == Key_None:
     pollKeyboardInput(excludes = {Key_Shift, Key_Ctrl, Key_Alt})
     keys.activation = getReleasedKey()
-    if keys.activation != KeyNone:
+    if keys.activation != Key_None:
       echo keys.activation
 
   # set deactivation key
   stdout.write("> deactivation key: ")
-  while keys.deactivation == KeyNone:
+  while keys.deactivation == Key_None:
     pollKeyboardInput(excludes = {Key_Shift, Key_Ctrl, Key_Alt})
     keys.deactivation = getReleasedKey()
-    if keys.deactivation != KeyNone:
+    if keys.deactivation != Key_None:
       echo keys.deactivation
 
   echo "> press ctrl+c to exit"
