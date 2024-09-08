@@ -64,7 +64,7 @@ proc main =
     elif autoClickActive and keys.deactivation.isPressed():
       # deactivate
       autoClickActive = false
-      echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | ❌ stopped!"
+      echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | 🔴 stopped!"
 
     # auto click
     if autoClickActive:
