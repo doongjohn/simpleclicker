@@ -10,7 +10,7 @@ const
   delay = 1
 
 var
-  runApp = true
+  run = true
   autoClickActive = false
   keys: tuple[
     activation: KeyCode,
@@ -51,20 +51,20 @@ proc main =
   echo "> press ctrl+c to exit"
 
   setControlCHook proc {.noconv.} =
-    runApp = false
+    run = false
 
   # app loop
-  while runApp:
+  while run:
     pollKeyboardInput()
 
     if not autoClickActive and keys.activation.isPressed():
       # activate
-      echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | 👇 started!"
       autoClickActive = true
+      echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | 👇 started!"
     elif autoClickActive and keys.deactivation.isPressed():
       # deactivate
-      echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | ❌ stopped!"
       autoClickActive = false
+      echo "* ", times.now().format("hh tt : mm'm' : ss's'"), " | ❌ stopped!"
 
     # auto click
     if autoClickActive:
