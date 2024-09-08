@@ -19,26 +19,29 @@ requires "winim"
 import std/os
 import std/strformat
 
-proc extractTaskArgs(taskName: string): seq[string] =
+proc getTaskArgs(taskName: string): seq[string] =
   let args = commandLineParams()
   let argStart = args.find(taskName) + 1
   args[argStart .. ^1]
 
 task build_windows, "build windows exe via zig cc":
-  const zigcc = "{getCurrentDir()}/zigcc".fmt()
-  # zig cc without pdb: https://ziggit.dev/t/how-to-use-zig-cc-without-generating-a-pdb-file/2873
-  const zigccOption = "--target=x86_64-windows -Doptimize=ReleaseSmall -s"
-  const srcFile = "src/main.nim"
-  const exeName = "simpleclicker.exe"
-  const args = "build_windows".extractTaskArgs().join(" ")
+  const
+    zigcc = fmt("{getCurrentDir()}/zigcc")
+    zigccArgs = "--target=x86_64-windows -Doptimize=ReleaseSmall -s" # https://ziggit.dev/t/how-to-use-zig-cc-without-generating-a-pdb-file
 
-  exec "nim c " &
-    """--cc:clang """ &
-    """--clang.exe="{zigcc}" """.fmt() &
-    """--clang.linkerexe="{zigcc}" """.fmt() &
-    """--passC:"{zigccOption}" """.fmt() &
-    """--passL:"{zigccOption}" """.fmt() &
-    """--os:windows --opt:size -d:release """ &
-    """-o:"{exeName}" """.fmt() &
-    """{args} """.fmt() &
-    """{srcFile}""".fmt()
+  const
+    srcFile = "src/main.nim"
+    exeName = "simpleclicker.exe"
+    nimcArgs = getTaskArgs("build_windows").join(" ")
+
+  exec "nim c " & [
+    fmt("--cc:clang --clang.exe=\"{zigcc}\" --clang.linkerexe=\"{zigcc}\""),
+    fmt("--passC:\"{zigccArgs}\""),
+    fmt("--passL:\"{zigccArgs}\""),
+    "--os:windows",
+    "--opt:size",
+    "-d:release",
+    fmt("-o:\"{exeName}\""),
+    fmt("{nimcArgs}"),
+    fmt("{srcFile}"),
+  ].join(" ")
