@@ -138,13 +138,10 @@ const
   VK_PA1 = 0xFD
   VK_OEM_CLEAR = 0xFE
 
-
 type KeyCode* = distinct uint8
-
 
 proc `==`*(x, y: KeyCode): bool =
   result = x.ord() == y.ord()
-
 
 const
   Key_None* = KeyCode(0)
@@ -321,7 +318,6 @@ const
   Key_8* = KeyCode('8'.ord())
   Key_9* = KeyCode('9'.ord())
 
-
 const keyNames = block:
   var names: array[256, string]
   names[Key_None.ord()] = "None"
@@ -497,7 +493,6 @@ const keyNames = block:
   names[Key_8.ord()] = "8"
   names[Key_9.ord()] = "9"
   names
-
 
 proc `$`*(keyCode: KeyCode): string =
   result = keyNames[keyCode.ord()]

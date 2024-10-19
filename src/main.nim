@@ -4,7 +4,6 @@ import pkg/winim/lean
 import keycodes
 import input
 
-
 const
   holdTime = 1
   delay = 1
@@ -17,7 +16,6 @@ var
     deactivation: KeyCode,
   ]
 
-
 proc handleInitialEnterKey =
   # wait for the user to release the enter key
   pollKeyboardInput()
@@ -25,7 +23,6 @@ proc handleInitialEnterKey =
     while getReleasedKey() != Key_Enter:
       pollKeyboardInput()
       sleep(1)
-
 
 proc main =
   echo "[simple auto clicker 👇👇👇]"
@@ -74,6 +71,5 @@ proc main =
       sleep(delay)
     else:
       sleep(1)
-
 
 main()

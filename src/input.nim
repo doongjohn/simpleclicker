@@ -1,19 +1,16 @@
 import pkg/winim/lean
 import keycodes
 
-
 var
   # TODO: use bit array instead?
   prevStateKeyDown: set[KeyCode]
   curStateKeyPressed: set[KeyCode]
   curStateKeyReleased: set[KeyCode]
 
-
 proc resetKeyboardInput* =
   prevStateKeyDown = {}
   curStateKeyPressed = {}
   curStateKeyReleased = {}
-
 
 proc pollKeyboardInput*(excludes: set[KeyCode] = {}) =
   for i in 1 ..< 255:
@@ -35,42 +32,33 @@ proc pollKeyboardInput*(excludes: set[KeyCode] = {}) =
       prevStateKeyDown.excl(key)
       curStateKeyReleased.incl(key)
 
-
 proc isPressed*(key: KeyCode): bool =
   curStateKeyPressed.contains(key)
-
 
 proc isDown*(key: KeyCode): bool =
   prevStateKeyDown.contains(key)
 
-
 proc isUp*(key: KeyCode): bool =
   curStateKeyReleased.contains(key)
 
-
 proc getPressedKeys*: set[KeyCode] =
   curStateKeyPressed
-
 
 proc getPressedKey*: KeyCode =
   result = KeyCode(0)
   for key in getPressedKeys():
     result = key
 
-
 proc getDownKeys*: set[KeyCode] =
   prevStateKeyDown
-
 
 proc getDownKey*: KeyCode =
   result = KeyCode(0)
   for key in getDownKeys():
     result = key
 
-
 proc getReleasedKeys*: set[KeyCode] =
   curStateKeyReleased
-
 
 proc getReleasedKey*: KeyCode =
   result = KeyCode(0)

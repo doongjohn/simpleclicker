@@ -1,2 +1,3 @@
 --mm: "orc"
+--panics: "on"
 --threads: "off"
